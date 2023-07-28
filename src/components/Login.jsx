@@ -187,14 +187,14 @@ const Login = ()=>{
         };
         const responseFav = await fetchPost(url, options);
         console.log("TOKEN?", responseFav);
-        // if (responseFav===true){
-        //   null
-        // }else{
-        //  // alert("error en Notificaciones")
-        //  null
-        // }
-        //console.log("res", responseFav.data);
-        //setLoader(false);
+        if (responseFav===true){
+          null
+        }else{
+         alert("error en Notificaciones")
+         null
+        }
+        console.log("res", responseFav.data);
+        setLoader(false);
         
       }
   

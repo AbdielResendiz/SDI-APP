@@ -34,7 +34,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "supportsTablet": true,
+      
       "package": "store.sdiqro.sdi",
       "versionCode": 8
     },
