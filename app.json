@@ -5,7 +5,6 @@
     "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-  
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,7 +12,8 @@
       "backgroundColor": "#00BAEA"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/0be12457-39a3-483f-9481-e994c5fd5603"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,13 +28,11 @@
       }
     },
     "android": {
-      
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      
       "package": "store.sdiqro.sdi",
       "versionCode": 8
     },
@@ -60,6 +58,9 @@
           }
         }
       ]
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }

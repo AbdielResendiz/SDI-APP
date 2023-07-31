@@ -8,6 +8,17 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import URL from "../helper/URL.js";
 import fetchPost from "../helper/fetchPost.js";
+import Constants from "expo-constants";
+import { exp } from "react-native/Libraries/Animated/Easing.js";
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Login = ()=>{
   const BASE_URL= URL.BASE_URL;
@@ -24,18 +35,10 @@ const Login = ()=>{
 
     //Token Notificaciones
     const [expoPushToken, setExpoPushToken] = useState('');
-    useEffect(() => {
-      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-  
-      // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      //   setNotification(notification);
-      // });
-  
-      // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      //   console.log(response);
-      },[]);
+
        const  registerForPushNotificationsAsync=async()=> {
         let token;
+        let token2;
       
         if (Platform.OS === 'android') {
           await Notifications.setNotificationChannelAsync('default', {
@@ -57,14 +60,35 @@ const Login = ()=>{
             alert('Failed to get push token for push notification!');
             return;
           }
-          token = (await Notifications.getExpoPushTokenAsync()).data;
-          alert(token);
+          //token funcional el expo y local
+          // token = (await Notifications.getExpoPushTokenAsync()).data;
+          //nuevo token con projectId
+          token = await Notifications.getExpoPushTokenAsync({
+            projectId: Constants.expoConfig.extra.eas.projectId,
+          });
+          alert(token.data);
+          console.log("token login: ", token.data);
+          token2 = token.data;
+          setExpoPushToken(token2);
+          
         } else {
           alert('Must use physical device for Push Notifications');
         }
       
-        return token;
+        return token2;
       }
+
+      useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    
+        // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        //   setNotification(notification);
+        // });
+    
+        // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        //   console.log(response);
+        console.log("useEffect token", expoPushToken);
+        },[expoPushToken]);
       //FIN NOTIFICACIONES
 
     const Validarform = async()  => {
@@ -114,8 +138,9 @@ const Login = ()=>{
                          sendToken(resultado.idU)
                          storeCarrito(resultado.idC.id)
                         storeSucursal(resultado.idC.idSuc)
+                        console.log("token bienvenido log", expoPushToken);
                         
-                        alert(`Bienvenido: `);
+                        alert('Bienvenido: ' + expoPushToken);
 
                         navigation.reset({
                           index: 0,
@@ -177,24 +202,23 @@ const Login = ()=>{
 
       const sendToken = async(idU)=>{
         
-        const dataFav = new FormData();
-        dataFav.append("idU", idU);
-        dataFav.append("token", expoPushToken);
+        const dataToken = new FormData();
+        dataToken.append("idU", idU);
+        dataToken.append("token", expoPushToken);
         const url = `${BASE_URL}abdiel/perfil/send_token`
         const options = {
           method:'POST',
-          body: dataFav
+          body: dataToken
         };
-        const responseFav = await fetchPost(url, options);
-        console.log("TOKEN?", responseFav);
-        if (responseFav===true){
+        const responseToken = await fetchPost(url, options);
+        console.log("TOKEN?", responseToken);
+        if (responseToken===true){
           null
         }else{
          alert("error en Notificaciones")
          null
         }
-        console.log("res", responseFav.data);
-        setLoader(false);
+        //setLoader(false);
         
       }
   

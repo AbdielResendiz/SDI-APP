@@ -50,7 +50,7 @@ const [loader, setLoader ]= useState(true);
     };
     const res = await fetchPost(url, options);
     setImpresos(res.data);
-    console.log("res", res.data);
+   // console.log("res", res.data);
     
   }
   useEffect(() => {
